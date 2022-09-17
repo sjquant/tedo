@@ -1,6 +1,6 @@
 <template>
   <div class="todo">
-    <h1>Todo</h1>
+    <h1 class="text-red-400">Tedo</h1>
     <input type="text" v-model="newTodo" @keyup.enter="addTodo" />
     <ul>
       <li v-for="(todo, index) in todos" :key="index">

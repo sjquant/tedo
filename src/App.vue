@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Todo from "./pages/Todo.vue";
+import "./libs/init-firebase";
 </script>
 
 <template>
-  <Todo />
+  <router-view />
 </template>
