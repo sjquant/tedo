@@ -1,10 +1,10 @@
 <template>
-  <EmptyCenterLayout>
+  <EmptyCenter>
     <TodoSection />
-  </EmptyCenterLayout>
+  </EmptyCenter>
 </template>
 
 <script setup lang="ts">
-import EmptyCenterLayout from "../layouts/EmptyCenterLayout.vue";
+import EmptyCenter from "../layouts/EmptyCenter.vue";
 import TodoSection from "../components/TodoSection.vue";
 </script>

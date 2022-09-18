@@ -1,23 +1,15 @@
 <template>
-  <div class="todo">
-    <h1 class="text-red-400">Tedo</h1>
-    <input type="text" v-model="newTodo" @keyup.enter="addTodo" />
-    <ul>
-      <li v-for="(todo, index) in todos" :key="index">
-        {{ todo }}
-      </li>
-    </ul>
+  <div>
+    <div class="flex justify-center mb-4">
+      <div>
+        <div class="text-3xl text-center mb-1">일요일</div>
+        <div class="text-gray-400">2022-09-18</div>
+      </div>
+    </div>
+    <TodoInput />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
-const newTodo = ref("");
-const todos = ref(["Learn Vue 3", "Learn Vite"]);
-
-function addTodo() {
-  todos.value.push(newTodo.value);
-  newTodo.value = "";
-}
+import TodoInput from "./TodoInput.vue";
 </script>
