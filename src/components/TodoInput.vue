@@ -10,7 +10,11 @@
       v-if="inputActive"
     />
     <div class="w-full flex justify-center" v-else>
-      <button class="w-full text-gray-400" @click="toggleInput">
+      <button
+        data-test="new-todo-btn"
+        class="w-full text-gray-400"
+        @click="toggleInput"
+      >
         + 새로운 할 일 추가하기
       </button>
     </div>
