@@ -20,12 +20,15 @@
 import { nextTick, Ref, ref, watch } from "vue";
 
 const newTodo = ref("");
-const todos = ref(["Learn Vue 3", "Learn Vite"]);
 const inputActive = ref(false);
 const input: Ref<HTMLInputElement | null> = ref(null);
 
+const emit = defineEmits<{
+  (e: "confirm", todo: string): void;
+}>();
+
 function addTodo() {
-  todos.value.push(newTodo.value);
+  emit("confirm", newTodo.value);
   newTodo.value = "";
 }
 
