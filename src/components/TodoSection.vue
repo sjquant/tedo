@@ -2,7 +2,7 @@
   <div>
     <TodoHeader :date="new Date()" />
     <TodoInput @confirm="addTodo" />
-    <TodoContent :todos="todos" />
+    <TodoContent :todos="todos" @delete="removeTodo" />
   </div>
 </template>
 
@@ -16,5 +16,9 @@ const todos = ref<string[]>([]);
 
 function addTodo(todo: string) {
   todos.value.push(todo);
+}
+
+function removeTodo(idx: number) {
+  todos.value.splice(idx, 1);
 }
 </script>

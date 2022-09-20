@@ -5,7 +5,7 @@
       type="text"
       class="w-full bg-transparent focus:outline-none"
       v-model="newTodo"
-      @keyup.enter="addTodo"
+      @keypress.enter="addTodo"
       @blur="toggleInput"
       v-if="inputActive"
     />
@@ -28,6 +28,9 @@ const emit = defineEmits<{
 }>();
 
 function addTodo() {
+  if (newTodo.value.trim() === "") {
+    return;
+  }
   emit("confirm", newTodo.value);
   newTodo.value = "";
 }
