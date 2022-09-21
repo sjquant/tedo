@@ -5,7 +5,13 @@
       <div data-test="todo-item" class="text-gray-400">{{ props.todo }}</div>
     </div>
     <div class="flex items-center">
-      <button class="text-gray-400" @click="emit('delete')">삭제</button>
+      <button
+        data-test="remove-todo-btn"
+        class="text-gray-400"
+        @click="emit('delete')"
+      >
+        삭제
+      </button>
     </div>
   </li>
 </template>
