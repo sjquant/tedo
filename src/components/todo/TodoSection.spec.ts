@@ -4,6 +4,10 @@ import { vi } from "vitest";
 import TodoSection from "./TodoSection.vue";
 
 describe("TodoSection", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it("renders the todo on user creates new todo", async () => {
     // Given
     const wrapper = mount(TodoSection);
@@ -32,5 +36,20 @@ describe("TodoSection", () => {
 
     // Then
     expect(wrapper.find('[data-test="todo-item"]').exists()).toBe(false);
+  });
+
+  it("renders saved todos on mounted", async () => {
+    // Given
+    const todos = [
+      { name: "TODO 1", checked: false },
+      { name: "TODO 2", checked: true },
+      { name: "TODO 3", checked: false },
+    ];
+    localStorage.setItem("todos", JSON.stringify(todos));
+    const wrapper = await mount(TodoSection);
+
+    // Then
+    const todoItems = wrapper.findAll('[data-test="todo-item"]');
+    expect(todoItems.length).toBe(3);
   });
 });

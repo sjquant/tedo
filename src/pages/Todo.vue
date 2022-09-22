@@ -6,5 +6,5 @@
 
 <script setup lang="ts">
 import EmptyCenter from "../layouts/EmptyCenter.vue";
-import TodoSection from "../components/TodoSection.vue";
+import TodoSection from "../components/todo/TodoSection.vue";
 </script>
