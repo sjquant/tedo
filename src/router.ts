@@ -7,6 +7,10 @@ const router = createRouter({
       path: "/",
       component: () => import("./pages/Todo.vue"),
     },
+    {
+      path: "/signin",
+      component: () => import("./pages/Signin.vue"),
+    },
   ],
 });
 
