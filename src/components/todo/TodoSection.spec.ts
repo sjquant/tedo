@@ -41,15 +41,23 @@ describe("TodoSection", () => {
   it("renders saved todos on mounted", async () => {
     // Given
     const todos = [
-      { name: "TODO 1", checked: false },
-      { name: "TODO 2", checked: true },
-      { name: "TODO 3", checked: false },
+      { content: "TODO 1", checked: false },
+      { content: "TODO 2", checked: true },
+      { content: "TODO 3", checked: false },
     ];
     localStorage.setItem("todos", JSON.stringify(todos));
     const wrapper = await mount(TodoSection);
 
     // Then
     const todoItems = wrapper.findAll('[data-test="todo-item"]');
+    const inputs = wrapper.findAll("input");
     expect(todoItems.length).toBe(3);
+    expect(inputs.length).toBe(3);
+    expect(todoItems[0].text()).toBe("TODO 1");
+    expect(todoItems[1].text()).toBe("TODO 2");
+    expect(todoItems[2].text()).toBe("TODO 3");
+    expect(inputs[0].element.checked).toBe(false);
+    expect(inputs[1].element.checked).toBe(true);
+    expect(inputs[2].element.checked).toBe(false);
   });
 });

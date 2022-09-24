@@ -470,6 +470,13 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@pinia/testing@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@pinia/testing/-/testing-0.0.14.tgz#774791df360a1949c9ea2d8665de35d5a0200251"
+  integrity sha512-ZmZwVNd/NnKYLIfjfuKl0zlJ3UdiXFpsHzSlL6wCeezSlyrqGMxsIQKv0J6fleu38gyCNTPBEipfxrt8V4+VIg==
+  dependencies:
+    vue-demi "*"
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -658,7 +665,7 @@
     "@vue/compiler-dom" "3.2.38"
     "@vue/shared" "3.2.38"
 
-"@vue/devtools-api@^6.1.4":
+"@vue/devtools-api@^6.1.4", "@vue/devtools-api@^6.2.1":
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.2.1.tgz#6f2948ff002ec46df01420dfeff91de16c5b4092"
   integrity sha512-OEgAMeQXvCoJ+1x8WyQuVZzFo0wcyCmUR3baRVLmKBo1LmYZWMlRiXlux5jd0fqVJu6PfDbOrZItVqUEzLobeQ==
@@ -1733,6 +1740,14 @@ picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+
+pinia@^2.0.22:
+  version "2.0.22"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.22.tgz#435468e8e6d6aa6f319cb727b23bd51db0844c4a"
+  integrity sha512-u+b8/BC+tmvo3ACbYO2w5NfxHWFOjvvw9DQnyT0dW8aUMCPRQT5QnfZ5R5W2MzZBMTeZRMQI7V/QFbafmM9QHw==
+  dependencies:
+    "@vue/devtools-api" "^6.2.1"
+    vue-demi "*"
 
 postcss@^8.1.10, postcss@^8.4.16:
   version "8.4.16"
