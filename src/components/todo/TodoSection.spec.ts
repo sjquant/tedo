@@ -46,6 +46,8 @@ describe("TodoSection", () => {
       { content: "TODO 3", checked: false },
     ];
     localStorage.setItem("todos", JSON.stringify(todos));
+
+    // When
     const wrapper = await mount(TodoSection);
 
     // Then

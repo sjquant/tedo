@@ -3,7 +3,15 @@ import { createRouter, createWebHistory } from "vue-router";
 export const routes = [
   {
     path: "/",
-    component: () => import("./pages/Todo.vue"),
+    name: "Home",
+    component: () => import("./pages/Home.vue"),
+    children: [
+      {
+        path: "",
+        name: "Todo",
+        component: () => import("./pages/Todo.vue"),
+      },
+    ],
   },
   {
     path: "/signin",

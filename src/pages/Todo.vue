@@ -1,10 +1,7 @@
 <template>
-  <EmptyCenter>
-    <TodoSection />
-  </EmptyCenter>
+  <TodoSection />
 </template>
 
 <script setup lang="ts">
-import EmptyCenter from "../layouts/EmptyCenter.vue";
 import TodoSection from "../components/todo/TodoSection.vue";
 </script>
