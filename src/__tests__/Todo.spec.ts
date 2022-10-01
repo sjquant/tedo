@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { vi } from "vitest";
 
-import TodoSection from "./TodoSection.vue";
+import TodoSection from "../components/todo/TodoSection.vue";
 
 describe("TodoSection", () => {
   beforeEach(() => {

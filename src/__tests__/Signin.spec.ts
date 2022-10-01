@@ -1,8 +1,8 @@
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
-import SigninSection from "./SigninSection.vue";
-import { createFakeRouter } from "../../utils/testing";
-import { useUserStore } from "../../stores/user";
+import SigninSection from "../components/signin/SigninSection.vue";
+import { createFakeRouter } from "../utils/testing";
+import { useUserStore } from "../stores/user";
 
 describe("SigninSection", () => {
   it("routes to main page on singin success", async () => {
