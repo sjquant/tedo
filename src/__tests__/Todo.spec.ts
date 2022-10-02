@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { vi } from "vitest";
-
 import TodoSection from "../components/todo/TodoSection.vue";
+import { createFakeRouter } from "../utils/testing";
 
 describe("TodoSection", () => {
   beforeEach(() => {
@@ -61,5 +61,25 @@ describe("TodoSection", () => {
     expect(inputs[0].element.checked).toBe(false);
     expect(inputs[1].element.checked).toBe(true);
     expect(inputs[2].element.checked).toBe(false);
+  });
+
+  it("redirect guest user to login page on input format like '날짜: yyyy-mm-dd <content>'", async () => {
+    // Given
+    const router = createFakeRouter("/signin");
+    vi.spyOn(router, "push");
+    const wrapper = await mount(TodoSection, {
+      global: {
+        plugins: [router],
+      },
+    });
+    await wrapper.find('[data-test="new-todo-btn"').trigger("click");
+
+    // When
+    const inputEl = wrapper.find("input");
+    inputEl.setValue("날짜: 2022-03-28 New todo");
+    await inputEl.trigger("keypress.enter");
+
+    // Then
+    expect(router.push).toHaveBeenCalledWith("/signin");
   });
 });
