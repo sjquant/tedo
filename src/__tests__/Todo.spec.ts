@@ -1,5 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { vi } from "vitest";
+import { createTestingPinia } from "@pinia/testing";
 import TodoSection from "../components/todo/TodoSection.vue";
 import { createFakeRouter } from "../utils/testing";
 
@@ -10,7 +11,11 @@ describe("TodoSection", () => {
 
   it("renders the todo on user creates new todo", async () => {
     // Given
-    const wrapper = mount(TodoSection);
+    const wrapper = mount(TodoSection, {
+      global: {
+        plugins: [createTestingPinia()],
+      },
+    });
     await wrapper.find('[data-test="new-todo-btn"').trigger("click");
 
     // When
@@ -48,7 +53,11 @@ describe("TodoSection", () => {
     localStorage.setItem("todos", JSON.stringify(todos));
 
     // When
-    const wrapper = await mount(TodoSection);
+    const wrapper = await mount(TodoSection, {
+      global: {
+        plugins: [createTestingPinia()],
+      },
+    });
 
     // Then
     const todoItems = wrapper.findAll('[data-test="todo-item"]');
@@ -69,7 +78,7 @@ describe("TodoSection", () => {
     vi.spyOn(router, "push");
     const wrapper = await mount(TodoSection, {
       global: {
-        plugins: [router],
+        plugins: [router, createTestingPinia()],
       },
     });
     await wrapper.find('[data-test="new-todo-btn"').trigger("click");
@@ -80,6 +89,8 @@ describe("TodoSection", () => {
     await inputEl.trigger("keypress.enter");
 
     // Then
+    const todoItems = wrapper.findAll('[data-test="todo-item"]');
+    expect(todoItems.length).toBe(0);
     expect(router.push).toHaveBeenCalledWith("/signin");
   });
 });

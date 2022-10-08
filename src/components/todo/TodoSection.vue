@@ -10,6 +10,8 @@
 import { Ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useUserStore } from "../../stores/user";
 
 import { ITodo } from "./todo";
 import TodoInput from "./TodoInput.vue";
@@ -17,11 +19,13 @@ import TodoHeader from "./TodoHeader.vue";
 import TodoContent from "./TodoContent.vue";
 
 const router = useRouter();
+const { user } = storeToRefs(useUserStore());
 const todos: Ref<Array<ITodo>> = useLocalStorage("todos", []);
 
 function addTodo(content: string) {
-  if (pickDate(content)) {
+  if (!user.value && pickDate(content)) {
     router.push("/signin");
+    return;
   }
   todos.value.push({ content, checked: false });
 }
