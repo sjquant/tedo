@@ -13,22 +13,23 @@ interface User {
 
 export const useUserStore = defineStore("user", () => {
   const user: Ref<User | null> = ref(null);
-  const accessToken = ref("");
-  const refreshToken = ref("");
 
   async function oauthSignin(providerName: ProviderName) {
     const result = await auth.oauthSignin(providerName);
-    user.value = {
+    setUser({
       name: result.user.displayName || "",
       email: result.user.email || "",
       photoUrl: result.user.photoURL || "",
-    };
-    accessToken.value = result.token;
-    refreshToken.value = result.user.refreshToken;
+    });
+  }
+
+  function setUser(data: User | null) {
+    user.value = data;
   }
 
   return {
     user,
+    setUser,
     oauthSignin,
   };
 });
