@@ -11,6 +11,7 @@ const auth = getAuth();
 auth.onAuthStateChanged((user) => {
   if (user) {
     store.setUser({
+      uid: user.uid,
       name: user.displayName || "",
       email: user.email || "",
       photoUrl: user.photoURL || "",

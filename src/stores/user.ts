@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
-import auth from "../libs/auth";
-import type { ProviderName } from "../libs/auth";
+import auth from "../apis/auth";
+import type { ProviderName } from "../apis/auth";
 
 import type { Ref } from "vue";
 import { ref } from "vue";
 
 interface User {
+  uid: string;
   name: string;
   email: string;
   photoUrl: string;
@@ -17,6 +18,7 @@ export const useUserStore = defineStore("user", () => {
   async function oauthSignin(providerName: ProviderName) {
     const result = await auth.oauthSignin(providerName);
     setUser({
+      uid: result.user.uid,
       name: result.user.displayName || "",
       email: result.user.email || "",
       photoUrl: result.user.photoURL || "",

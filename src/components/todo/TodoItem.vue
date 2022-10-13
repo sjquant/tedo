@@ -4,8 +4,8 @@
       <input
         type="checkbox"
         class="mr-2"
-        :checked="props.todo.checked"
-        @change="emit('check', !props.todo.checked)"
+        :checked="props.todo.done"
+        @change="emit('check', !props.todo.done)"
       />
       <div data-test="todo-item" class="text-gray-400">
         {{ props.todo.content }}

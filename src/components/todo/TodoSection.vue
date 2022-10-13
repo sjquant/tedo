@@ -7,11 +7,13 @@
 </template>
 
 <script setup lang="ts">
-import { Ref } from "vue";
+import type { Ref } from "vue";
+import { watch } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../../stores/user";
+import todoApi from "../../apis/todo";
 
 import { ITodo } from "./todo";
 import TodoInput from "./TodoInput.vue";
@@ -27,7 +29,7 @@ function addTodo(content: string) {
     router.push("/signin");
     return;
   }
-  todos.value.push({ content, checked: false });
+  todos.value.push({ content, done: false });
 }
 
 function pickDate(content: string) {
@@ -46,6 +48,19 @@ function removeTodo(idx: number) {
 }
 
 function onChecked(idx: number, checked: boolean) {
-  todos.value[idx].checked = checked;
+  todos.value[idx].done = checked;
 }
+
+watch(
+  user,
+  async (newUser) => {
+    console.log(newUser);
+    if (!newUser) return;
+    if (newUser) {
+      const items = await todoApi.fetchTodos(newUser.uid);
+      todos.value = items;
+    }
+  },
+  { immediate: true }
+);
 </script>
