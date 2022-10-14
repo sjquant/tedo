@@ -12,9 +12,10 @@ describe("TodoSection", () => {
 
   it("renders the todo on user creates new todo", async () => {
     // Given
+    const router = createFakeRouter("/signin");
     const wrapper = mount(TodoSection, {
       global: {
-        plugins: [createTestingPinia()],
+        plugins: [router, createTestingPinia()],
       },
     });
     await wrapper.find('[data-test="new-todo-btn"').trigger("click");
@@ -30,8 +31,13 @@ describe("TodoSection", () => {
 
   it("removes the todo on remove btn clicked and confirmed", async () => {
     // Given
+    const router = createFakeRouter("/signin");
     vi.spyOn(window, "confirm").mockReturnValue(true);
-    const wrapper = mount(TodoSection);
+    const wrapper = mount(TodoSection, {
+      global: {
+        plugins: [router, createTestingPinia()],
+      },
+    });
     await wrapper.find('[data-test="new-todo-btn"').trigger("click");
     const inputEl = wrapper.find("input");
     inputEl.setValue("New todo");
@@ -46,6 +52,7 @@ describe("TodoSection", () => {
 
   it("renders locally-saved todos on mounted", async () => {
     // Given
+    const router = createFakeRouter("/signin");
     const todos = [
       { content: "TODO 1", done: false },
       { content: "TODO 2", done: true },
@@ -54,9 +61,9 @@ describe("TodoSection", () => {
     localStorage.setItem("todos", JSON.stringify(todos));
 
     // When
-    const wrapper = await mount(TodoSection, {
+    const wrapper = mount(TodoSection, {
       global: {
-        plugins: [createTestingPinia()],
+        plugins: [router, createTestingPinia()],
       },
     });
 
@@ -97,6 +104,7 @@ describe("TodoSection", () => {
 
   it("renders remotely-saved todos when user logged in", async () => {
     // Given
+    const router = createFakeRouter("/signin");
     const todos = [
       { content: "TODO 1", done: false },
       { content: "TODO 2", done: true },
@@ -114,6 +122,7 @@ describe("TodoSection", () => {
     const wrapper = await mount(TodoSection, {
       global: {
         plugins: [
+          router,
           createTestingPinia({
             initialState: {
               user: {

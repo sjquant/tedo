@@ -27,7 +27,7 @@ describe("SigninSection", () => {
     // Given
     const router = createFakeRouter("/");
     vi.spyOn(router, "push");
-    vi.spyOn(window, "alert");
+    vi.spyOn(window, "alert").mockImplementation(() => {});
 
     const wrapper = mount(SigninSection, {
       global: {

@@ -6,6 +6,14 @@ export function createFakeRouter(path: string) {
     history: createMemoryHistory(),
     routes: [
       {
+        path: "/",
+        component: {
+          render() {
+            return h("div");
+          },
+        },
+      },
+      {
         path,
         component: {
           render: () => h("div"),
