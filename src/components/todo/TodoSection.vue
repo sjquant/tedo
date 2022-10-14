@@ -54,7 +54,6 @@ function onChecked(idx: number, checked: boolean) {
 watch(
   user,
   async (newUser) => {
-    console.log(newUser);
     if (!newUser) return;
     if (newUser) {
       const items = await todoApi.fetchTodos(newUser.uid);

@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { mount, flushPromises } from "@vue/test-utils";
 import { vi } from "vitest";
 import { createTestingPinia } from "@pinia/testing";
 import TodoSection from "../components/todo/TodoSection.vue";
@@ -116,12 +116,15 @@ describe("TodoSection", () => {
         plugins: [
           createTestingPinia({
             initialState: {
-              user,
+              user: {
+                user,
+              },
             },
           }),
         ],
       },
     });
+    await flushPromises();
 
     // Then
     const todoItems = wrapper.findAll('[data-test="todo-item"]');
