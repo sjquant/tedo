@@ -15,7 +15,7 @@ import { storeToRefs } from "pinia";
 import { useUserStore } from "../../stores/user";
 import todoApi from "../../apis/todo";
 
-import { ITodo } from "./todo";
+import type { ITodo } from "./todo";
 import TodoInput from "./TodoInput.vue";
 import TodoHeader from "./TodoHeader.vue";
 import TodoContent from "./TodoContent.vue";
