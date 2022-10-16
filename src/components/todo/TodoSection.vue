@@ -19,15 +19,23 @@ import { ITodo } from "./todo";
 import TodoInput from "./TodoInput.vue";
 import TodoHeader from "./TodoHeader.vue";
 import TodoContent from "./TodoContent.vue";
+import todo from "../../apis/todo";
 
 const router = useRouter();
 const { user } = storeToRefs(useUserStore());
 const todos: Ref<Array<ITodo>> = useLocalStorage("todos", []);
 
-function addTodo(content: string) {
+async function addTodo(content: string) {
   if (!user.value && pickDate(content)) {
     router.push("/signin");
     return;
+  }
+
+  if (user.value) {
+    await todo.addTodo(user.value.uid, {
+      content,
+      done: false,
+    });
   }
   todos.value.push({ content, done: false });
 }
