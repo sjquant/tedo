@@ -1,4 +1,4 @@
-import { getFirestore } from "firebase/firestore";
+import { deleteDoc, doc, getFirestore, updateDoc } from "firebase/firestore";
 import {
   getDocs,
   query,
@@ -17,18 +17,36 @@ async function fetchTodos(uid: string) {
     orderBy("createdAt")
   );
   const querySnapshot = await getDocs(q);
-  const data = querySnapshot.docs.map((doc) => doc.data() as ITodo);
+  const data = querySnapshot.docs.map(
+    (doc) => ({ id: doc.id, ...doc.data() } as ITodo)
+  );
   return data;
 }
 
-async function addTodo(uid: string, todoItem: ITodo) {
+async function addTodo(uid: string, content: string): Promise<string> {
   const db = getFirestore();
-  const createdAt = new Date().valueOf();
-  await addDoc(collection(db, "todos"), {
-    ...todoItem,
+  const createdAt = Date.now();
+  const docRef = await addDoc(collection(db, "todos"), {
+    content,
     uid,
     createdAt,
+    done: false,
+  });
+  return docRef.id;
+}
+
+async function updateDone(id: string, done: boolean) {
+  const db = getFirestore();
+  const docRef = doc(db, "todos", id);
+  await updateDoc(docRef, {
+    done,
   });
 }
 
-export default { fetchTodos, addTodo };
+async function removeTodo(id: string) {
+  const db = getFirestore();
+  const docRef = doc(db, "todos", id);
+  await deleteDoc(docRef);
+}
+
+export default { fetchTodos, addTodo, updateDone, removeTodo };

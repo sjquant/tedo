@@ -19,7 +19,6 @@ import type { ITodo } from "./todo";
 import TodoInput from "./TodoInput.vue";
 import TodoHeader from "./TodoHeader.vue";
 import TodoContent from "./TodoContent.vue";
-import todo from "../../apis/todo";
 
 const router = useRouter();
 const { user } = storeToRefs(useUserStore());
@@ -31,13 +30,12 @@ async function addTodo(content: string) {
     return;
   }
 
+  let id = Date.now().toString();
   if (user.value) {
-    await todo.addTodo(user.value.uid, {
-      content,
-      done: false,
-    });
+    id = await todoApi.addTodo(user.value.uid, content);
   }
-  todos.value.push({ content, done: false });
+
+  todos.value.push({ id, content, done: false });
 }
 
 function pickDate(content: string) {
@@ -52,10 +50,22 @@ function pickDate(content: string) {
 }
 
 function removeTodo(idx: number) {
+  const todo = todos.value[idx];
+
+  if (user.value) {
+    todoApi.removeTodo(todo.id);
+  }
+
   todos.value.splice(idx, 1);
 }
 
-function onChecked(idx: number, checked: boolean) {
+async function onChecked(idx: number, checked: boolean) {
+  const todo = todos.value[idx];
+
+  if (user.value) {
+    await todoApi.updateDone(todo.id, checked);
+  }
+
   todos.value[idx].done = checked;
 }
 
@@ -63,10 +73,8 @@ watch(
   user,
   async (newUser) => {
     if (!newUser) return;
-    if (newUser) {
-      const items = await todoApi.fetchTodos(newUser.uid);
-      todos.value = items;
-    }
+    const items = await todoApi.fetchTodos(newUser.uid);
+    todos.value = items;
   },
   { immediate: true }
 );

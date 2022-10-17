@@ -54,9 +54,9 @@ describe("TodoSection", () => {
     // Given
     const router = createFakeRouter("/signin");
     const todos = [
-      { content: "TODO 1", done: false },
-      { content: "TODO 2", done: true },
-      { content: "TODO 3", done: false },
+      { id: "A", content: "TODO 1", done: false },
+      { id: "B", content: "TODO 2", done: true },
+      { id: "C", content: "TODO 3", done: false },
     ];
     localStorage.setItem("todos", JSON.stringify(todos));
 
@@ -106,9 +106,9 @@ describe("TodoSection", () => {
     // Given
     const router = createFakeRouter("/signin");
     const todos = [
-      { content: "TODO 1", done: false, createdAt: 1665931193264 },
-      { content: "TODO 2", done: true, createdAt: 1665941193264 },
-      { content: "TODO 3", done: false, createdAt: 1665951193264 },
+      { id: "A", content: "TODO 1", done: false, createdAt: 1665931193264 },
+      { id: "B", content: "TODO 2", done: true, createdAt: 1665941193264 },
+      { id: "C", content: "TODO 3", done: false, createdAt: 1665951193264 },
     ];
     vi.spyOn(todoApi, "fetchTodos").mockResolvedValue(todos);
     const user = {
