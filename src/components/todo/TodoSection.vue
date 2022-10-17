@@ -2,7 +2,7 @@
   <div>
     <TodoHeader :date="new Date()" />
     <TodoInput @confirm="addTodo" />
-    <TodoContent :todos="todos" @delete="removeTodo" @check="onChecked" />
+    <TodoContent :todos="todos" @delete="removeTodo" @check="updateDone" />
   </div>
 </template>
 
@@ -59,14 +59,14 @@ function removeTodo(idx: number) {
   todos.value.splice(idx, 1);
 }
 
-async function onChecked(idx: number, checked: boolean) {
+async function updateDone(idx: number, done: boolean) {
   const todo = todos.value[idx];
 
   if (user.value) {
-    await todoApi.updateDone(todo.id, checked);
+    await todoApi.updateDone(todo.id, done);
   }
 
-  todos.value[idx].done = checked;
+  todos.value[idx].done = done;
 }
 
 watch(
