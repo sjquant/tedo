@@ -3,7 +3,6 @@ import { vi } from "vitest";
 import { createTestingPinia } from "@pinia/testing";
 import TodoSection from "../components/todo/TodoSection.vue";
 import todoApi from "../apis/todo";
-import { createFakeRouter } from "../utils/testing";
 
 describe("TodoSection", () => {
   beforeEach(() => {
@@ -12,10 +11,9 @@ describe("TodoSection", () => {
 
   it("renders the todo on user creates new todo", async () => {
     // Given
-    const router = createFakeRouter("/signin");
     const wrapper = mount(TodoSection, {
       global: {
-        plugins: [router, createTestingPinia()],
+        plugins: [createTestingPinia()],
       },
     });
     await wrapper.find('[data-test="new-todo-btn"').trigger("click");
@@ -31,11 +29,10 @@ describe("TodoSection", () => {
 
   it("removes the todo on remove btn clicked and confirmed", async () => {
     // Given
-    const router = createFakeRouter("/signin");
     vi.spyOn(window, "confirm").mockReturnValue(true);
     const wrapper = mount(TodoSection, {
       global: {
-        plugins: [router, createTestingPinia()],
+        plugins: [createTestingPinia()],
       },
     });
     await wrapper.find('[data-test="new-todo-btn"').trigger("click");
@@ -52,7 +49,6 @@ describe("TodoSection", () => {
 
   it("renders locally-saved todos on mounted", async () => {
     // Given
-    const router = createFakeRouter("/signin");
     const todos = [
       { id: "A", content: "TODO 1", done: false },
       { id: "B", content: "TODO 2", done: true },
@@ -63,7 +59,7 @@ describe("TodoSection", () => {
     // When
     const wrapper = mount(TodoSection, {
       global: {
-        plugins: [router, createTestingPinia()],
+        plugins: [createTestingPinia()],
       },
     });
 
@@ -80,31 +76,8 @@ describe("TodoSection", () => {
     expect(inputs[2].element.checked).toBe(false);
   });
 
-  it("redirect guest user to login page on input format like '날짜: yyyy-mm-dd <content>'", async () => {
-    // Given
-    const router = createFakeRouter("/signin");
-    vi.spyOn(router, "push");
-    const wrapper = await mount(TodoSection, {
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
-    });
-    await wrapper.find('[data-test="new-todo-btn"').trigger("click");
-
-    // When
-    const inputEl = wrapper.find("input");
-    inputEl.setValue("날짜: 2022-03-28 New todo");
-    await inputEl.trigger("keypress.enter");
-
-    // Then
-    const todoItems = wrapper.findAll('[data-test="todo-item"]');
-    expect(todoItems.length).toBe(0);
-    expect(router.push).toHaveBeenCalledWith("/signin");
-  });
-
   it("renders remotely-saved todos when user logged in", async () => {
     // Given
-    const router = createFakeRouter("/signin");
     const todos = [
       { id: "A", content: "TODO 1", done: false, createdAt: 1665931193264 },
       { id: "B", content: "TODO 2", done: true, createdAt: 1665941193264 },
@@ -122,7 +95,6 @@ describe("TodoSection", () => {
     const wrapper = await mount(TodoSection, {
       global: {
         plugins: [
-          router,
           createTestingPinia({
             initialState: {
               user: {

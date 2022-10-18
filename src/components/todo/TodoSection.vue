@@ -20,33 +20,16 @@ import TodoInput from "./TodoInput.vue";
 import TodoHeader from "./TodoHeader.vue";
 import TodoContent from "./TodoContent.vue";
 
-const router = useRouter();
 const { user } = storeToRefs(useUserStore());
 const todos: Ref<Array<ITodo>> = useLocalStorage("todos", []);
 
 async function addTodo(content: string) {
-  if (!user.value && pickDate(content)) {
-    router.push("/signin");
-    return;
-  }
-
   let id = Date.now().toString();
   if (user.value) {
     id = await todoApi.addTodo(user.value.uid, content);
   }
 
   todos.value.push({ id, content, done: false });
-}
-
-function pickDate(content: string) {
-  if (!/^날짜: \d{4}-\d{2}-\d{2} /.exec(content)) return null;
-
-  const date = content.split(" ")[1].trim();
-  try {
-    return new Date(date);
-  } catch {
-    return null;
-  }
 }
 
 async function removeTodo(idx: number) {
