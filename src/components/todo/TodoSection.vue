@@ -49,11 +49,11 @@ function pickDate(content: string) {
   }
 }
 
-function removeTodo(idx: number) {
+async function removeTodo(idx: number) {
   const todo = todos.value[idx];
 
   if (user.value) {
-    todoApi.removeTodo(todo.id);
+    await todoApi.removeTodo(todo.id);
   }
 
   todos.value.splice(idx, 1);
