@@ -4,7 +4,7 @@ import { createTestingPinia } from "@pinia/testing";
 import TodoSection from "../components/todo/TodoSection.vue";
 import todoApi from "../apis/todo";
 
-describe("TodoSection", () => {
+describe("Todo Section", () => {
   beforeEach(() => {
     localStorage.clear();
   });

@@ -10,7 +10,6 @@
 import type { Ref } from "vue";
 import { watch } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../../stores/user";
 import todoApi from "../../apis/todo";
