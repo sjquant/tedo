@@ -4,6 +4,7 @@ import router from "../router";
 import todoApi from "../apis/todo";
 
 import TodoPage from "../pages/Todo.vue";
+import { UserState } from "../stores/user";
 
 describe("Todo Page", () => {
   it("routes to signin page when user is not signed in", async () => {
@@ -13,12 +14,47 @@ describe("Todo Page", () => {
     // When
     mount(TodoPage, {
       global: {
-        plugins: [router, createTestingPinia()],
+        plugins: [
+          router,
+          createTestingPinia({
+            initialState: {
+              user: {
+                userState: UserState.NotSignedIn,
+              },
+            },
+          }),
+        ],
       },
     });
 
     // Then
     expect(router.push).toHaveBeenCalledWith("/signin");
+  });
+
+  it("does not route to signin page when user is not determined", async () => {
+    // Given
+    vi.spyOn(router, "push");
+    spyFetchTodoApis();
+
+    // When
+    mount(TodoPage, {
+      global: {
+        plugins: [
+          router,
+          createTestingPinia({
+            initialState: {
+              user: {
+                user: null,
+                userState: UserState.NotDetermined,
+              },
+            },
+          }),
+        ],
+      },
+    });
+
+    // Then
+    expect(router.push).not.toHaveBeenCalled();
   });
 
   it("does not route to signin page when user is signed in", async () => {
@@ -41,6 +77,7 @@ describe("Todo Page", () => {
             initialState: {
               user: {
                 user,
+                userState: UserState.SignedIn,
               },
             },
           }),

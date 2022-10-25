@@ -6,12 +6,12 @@
 import TodoSection from "../components/todo/TodoSection.vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useUserStore } from "../stores/user";
+import { useUserStore, UserState } from "../stores/user";
 
 const router = useRouter();
-const { user } = storeToRefs(useUserStore());
+const { user, userState } = storeToRefs(useUserStore());
 
-if (!user.value) {
+if (!user.value && userState.value === UserState.NotSignedIn) {
   router.push("/signin");
 }
 </script>
