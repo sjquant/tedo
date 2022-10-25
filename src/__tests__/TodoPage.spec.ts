@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
-import { createFakeRouter } from "../utils/testing";
+import router from "../router";
 import todoApi from "../apis/todo";
 
 import TodoPage from "../pages/Todo.vue";
@@ -8,7 +8,7 @@ import TodoPage from "../pages/Todo.vue";
 describe("Todo Page", () => {
   it("routes to signin page when user is not signed in", async () => {
     // Given
-    const router = spyRouter();
+    vi.spyOn(router, "push");
 
     // When
     mount(TodoPage, {
@@ -23,7 +23,7 @@ describe("Todo Page", () => {
 
   it("does not route to signin page when user is signed in", async () => {
     // Given
-    const router = spyRouter();
+    vi.spyOn(router, "push");
     const user = {
       uid: "user_uid",
       email: "user@email.com",
@@ -52,12 +52,6 @@ describe("Todo Page", () => {
     expect(router.push).not.toHaveBeenCalled();
   });
 });
-
-function spyRouter() {
-  const router = createFakeRouter("/signin");
-  vi.spyOn(router, "push");
-  return router;
-}
 
 function spyTodoApis() {
   const todos = [

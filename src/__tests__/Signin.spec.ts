@@ -1,13 +1,12 @@
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import SigninSection from "../components/signin/SigninSection.vue";
-import { createFakeRouter } from "../utils/testing";
+import router from "../router";
 import { useUserStore } from "../stores/user";
 
 describe("SigninSection", () => {
   it("routes to main page on singin success", async () => {
     // Given
-    const router = createFakeRouter("/");
     vi.spyOn(router, "push");
 
     const wrapper = mount(SigninSection, {
@@ -25,7 +24,6 @@ describe("SigninSection", () => {
 
   it("alerts error on signin failed", async () => {
     // Given
-    const router = createFakeRouter("/");
     vi.spyOn(router, "push");
     vi.spyOn(window, "alert").mockImplementation(() => {});
 
