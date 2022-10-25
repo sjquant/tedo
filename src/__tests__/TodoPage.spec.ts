@@ -30,7 +30,7 @@ describe("Todo Page", () => {
       name: "a_user",
       photoUrl: "",
     };
-    spyTodoApis();
+    spyFetchTodoApis();
 
     // When
     mount(TodoPage, {
@@ -53,7 +53,7 @@ describe("Todo Page", () => {
   });
 });
 
-function spyTodoApis() {
+function spyFetchTodoApis() {
   const todos = [
     { id: "A", content: "TODO 1", done: false, createdAt: 1665931193264 },
     { id: "B", content: "TODO 2", done: true, createdAt: 1665941193264 },

@@ -8,8 +8,7 @@
 
 <script setup lang="ts">
 import type { Ref } from "vue";
-import { watch } from "vue";
-import { useLocalStorage } from "@vueuse/core";
+import { watch, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../../stores/user";
 import todoApi from "../../apis/todo";
@@ -20,34 +19,25 @@ import TodoHeader from "./TodoHeader.vue";
 import TodoContent from "./TodoContent.vue";
 
 const { user } = storeToRefs(useUserStore());
-const todos: Ref<Array<ITodo>> = useLocalStorage("todos", []);
+const todos: Ref<Array<ITodo>> = ref([]);
 
 async function addTodo(content: string) {
   let id = Date.now().toString();
   if (user.value) {
     id = await todoApi.addTodo(user.value.uid, content);
   }
-
   todos.value.push({ id, content, done: false });
 }
 
 async function removeTodo(idx: number) {
   const todo = todos.value[idx];
-
-  if (user.value) {
-    await todoApi.removeTodo(todo.id);
-  }
-
+  await todoApi.removeTodo(todo.id);
   todos.value.splice(idx, 1);
 }
 
 async function updateDone(idx: number, done: boolean) {
   const todo = todos.value[idx];
-
-  if (user.value) {
-    await todoApi.updateDone(todo.id, done);
-  }
-
+  await todoApi.updateDone(todo.id, done);
   todos.value[idx].done = done;
 }
 
