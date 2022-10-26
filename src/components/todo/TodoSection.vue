@@ -10,6 +10,7 @@
 import type { Ref } from "vue";
 import { watch, ref } from "vue";
 import { storeToRefs } from "pinia";
+import type { User } from "../../stores/user";
 import { useUserStore } from "../../stores/user";
 import todoApi from "../../apis/todo";
 
@@ -22,11 +23,37 @@ const { user } = storeToRefs(useUserStore());
 const todos: Ref<Array<ITodo>> = ref([]);
 
 async function addTodo(content: string) {
-  let id = Date.now().toString();
-  if (user.value) {
-    id = await todoApi.addTodo(user.value.uid, content);
+  let { newContent, todoDate } = _parseContentAndDate(content);
+  const id: string = await todoApi.addTodo(
+    (user.value as User).uid,
+    newContent,
+    todoDate
+  );
+
+  const now = new Date();
+  const todayDate = `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()}`;
+  if (!todoDate || todoDate === todayDate) {
+    todos.value.push({ id, content: newContent, done: false });
   }
-  todos.value.push({ id, content, done: false });
+}
+
+function _parseContentAndDate(content: string): {
+  newContent: string;
+  todoDate: string | null;
+} {
+  let todoDate: string | null;
+  const matches = content.match(/^날짜: (\d{4}-\d{2}-\d{2})\s+(.*)/);
+  let newContent;
+  if (matches) {
+    todoDate = matches[1];
+    newContent = matches[2];
+  } else {
+    todoDate = null;
+    newContent = content;
+  }
+  return { newContent, todoDate };
 }
 
 async function removeTodo(idx: number) {

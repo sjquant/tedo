@@ -4,6 +4,13 @@ import { createTestingPinia } from "@pinia/testing";
 import TodoSection from "../components/todo/TodoSection.vue";
 import todoApi from "../apis/todo";
 
+const DUMMY_USER = {
+  uid: "user_uid",
+  email: "user@email.com",
+  name: "a_user",
+  photoUrl: "",
+};
+
 describe("Todo Section", () => {
   beforeEach(() => {
     spyTodoApis();
@@ -94,6 +101,35 @@ describe("Todo Section", () => {
     // Then
     expect(todoItemCheckbox.element.checked).toBe(true);
   });
+
+  it("saves the todo on the date when content starts with '날짜: YYYY-MM-DD'", async () => {
+    // Given
+    vi.spyOn(todoApi, "fetchTodos").mockResolvedValue([]);
+    const store = createLogginedUserStore();
+    const wrapper = mount(TodoSection, {
+      global: {
+        plugins: [store],
+      },
+    });
+    // 현재기준 + 2일
+    const givenDate = new Date();
+    givenDate.setDate(givenDate.getDate() + 2);
+    const givenDateStr = `${givenDate.getFullYear()}-${
+      givenDate.getMonth() + 1
+    }-${givenDate.getDate()}`;
+
+    // When
+    await addNewTodo(wrapper, `날짜: ${givenDateStr} 내용입니다.`);
+    await flushPromises();
+
+    // Then
+    expect(wrapper.find('[data-test="todo-item"]').exists()).toBe(false);
+    expect(todoApi.addTodo).toHaveBeenCalledWith(
+      DUMMY_USER["uid"],
+      "내용입니다.",
+      givenDateStr
+    );
+  });
 });
 
 async function addNewTodo(wrapper: VueWrapper, text: string) {
@@ -120,17 +156,10 @@ function spyTodoApis() {
 }
 
 function createLogginedUserStore() {
-  const user = {
-    uid: "user_uid",
-    email: "user@email.com",
-    name: "a_user",
-    photoUrl: "",
-  };
-
   return createTestingPinia({
     initialState: {
       user: {
-        user,
+        user: DUMMY_USER,
       },
     },
   });

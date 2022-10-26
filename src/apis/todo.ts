@@ -23,13 +23,18 @@ async function fetchTodos(uid: string) {
   return data;
 }
 
-async function addTodo(uid: string, content: string): Promise<string> {
+async function addTodo(
+  uid: string,
+  content: string,
+  todoDate: string | null
+): Promise<string> {
   const db = getFirestore();
   const createdAt = Date.now();
   const docRef = await addDoc(collection(db, "todos"), {
     content,
     uid,
     createdAt,
+    todoDate,
     done: false,
   });
   return docRef.id;

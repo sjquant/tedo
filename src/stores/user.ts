@@ -5,7 +5,7 @@ import type { ProviderName } from "../apis/auth";
 import type { Ref } from "vue";
 import { ref } from "vue";
 
-interface User {
+export interface User {
   uid: string;
   name: string;
   email: string;
