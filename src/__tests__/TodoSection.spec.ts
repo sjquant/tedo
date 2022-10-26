@@ -23,15 +23,14 @@ describe("Todo Section", () => {
 
     // Then
     const todoItems = wrapper.findAll('[data-test="todo-item"]');
-    const inputs = wrapper.findAll("input");
+    const todoContents = wrapper.findAll('[data-test="todo-item-content"]');
     expect(todoItems.length).toBe(3);
-    expect(inputs.length).toBe(3);
-    expect(todoItems[0].text()).toBe("TODO 1");
-    expect(todoItems[1].text()).toBe("TODO 2");
-    expect(todoItems[2].text()).toBe("TODO 3");
-    expect(inputs[0].element.checked).toBe(false);
-    expect(inputs[1].element.checked).toBe(true);
-    expect(inputs[2].element.checked).toBe(false);
+    expect(todoContents[0].text()).toBe("TODO 1");
+    expect(todoContents[1].text()).toBe("TODO 2");
+    expect(todoContents[2].text()).toBe("TODO 3");
+    expect(todoItems[0].find("input").element.checked).toBe(false);
+    expect(todoItems[1].find("input").element.checked).toBe(true);
+    expect(todoItems[2].find("input").element.checked).toBe(false);
   });
 
   it("renders the todo when user creates new todo", async () => {
@@ -49,7 +48,9 @@ describe("Todo Section", () => {
     await flushPromises();
 
     // Then
-    expect(wrapper.find('[data-test="todo-item"]').text()).toBe("New Todo");
+    expect(wrapper.find('[data-test="todo-item-content"]').text()).toBe(
+      "New Todo"
+    );
   });
 
   it("removes the todo on remove btn clicked and confirmed", async () => {
@@ -70,6 +71,28 @@ describe("Todo Section", () => {
 
     // Then
     expect(wrapper.find('[data-test="todo-item"]').exists()).toBe(false);
+  });
+
+  it('toggles the todo on "done" checkbox clicked', async () => {
+    // Given
+    vi.spyOn(todoApi, "fetchTodos").mockResolvedValue([]);
+    const store = createLogginedUserStore();
+    const wrapper = mount(TodoSection, {
+      global: {
+        plugins: [store],
+      },
+    });
+    await addNewTodo(wrapper, "TO BE TOGGLED");
+    const todoItemCheckbox = wrapper
+      .find('[data-test="todo-item"]')
+      .find("input");
+
+    // When
+    await todoItemCheckbox.trigger("click");
+    await flushPromises();
+
+    // Then
+    expect(todoItemCheckbox.element.checked).toBe(true);
   });
 });
 

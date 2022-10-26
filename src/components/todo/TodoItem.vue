@@ -1,5 +1,5 @@
 <template>
-  <li class="flex items-center justify-between mb-2">
+  <li class="flex items-center justify-between mb-2" data-test="todo-item">
     <div class="flex items-center">
       <input
         type="checkbox"
@@ -7,7 +7,7 @@
         :checked="props.todo.done"
         @change="emit('check', !props.todo.done)"
       />
-      <div data-test="todo-item" class="text-gray-400">
+      <div class="text-gray-400" data-test="todo-item-content">
         {{ props.todo.content }}
       </div>
     </div>
