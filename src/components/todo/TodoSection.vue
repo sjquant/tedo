@@ -30,27 +30,23 @@ async function addTodo(content: string) {
     todoDate
   );
 
-  const now = new Date();
-  const todayDate = `${now.getFullYear()}-${
-    now.getMonth() + 1
-  }-${now.getDate()}`;
-  if (!todoDate || todoDate === todayDate) {
+  if (!todoDate || todoDate === todayStr()) {
     todos.value.push({ id, content: newContent, done: false });
   }
 }
 
 function _parseContentAndDate(content: string): {
   newContent: string;
-  todoDate: string | null;
+  todoDate: string;
 } {
-  let todoDate: string | null;
-  const matches = content.match(/^날짜: (\d{4}-\d{2}-\d{2})\s+(.*)/);
+  let todoDate: string;
+  const matches = content.match(/^날짜:\s*(\d{4}-\d{2}-\d{2})\s+(.*)/);
   let newContent;
   if (matches) {
     todoDate = matches[1];
     newContent = matches[2];
   } else {
-    todoDate = null;
+    todoDate = "";
     newContent = content;
   }
   return { newContent, todoDate };
@@ -72,9 +68,17 @@ watch(
   user,
   async (newUser) => {
     if (!newUser) return;
-    const items = await todoApi.fetchTodos(newUser.uid);
+    const items = await todoApi.fetchTodos(newUser.uid, todayStr());
     todos.value = items;
   },
   { immediate: true }
 );
+
+function todayStr(): string {
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()}`;
+  return todayStr;
+}
 </script>

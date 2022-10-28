@@ -9,13 +9,17 @@ import {
 } from "firebase/firestore";
 import type { ITodo } from "../components/todo/todo";
 
-async function fetchTodos(uid: string) {
+async function fetchTodos(uid: string, todoDate: string): Promise<ITodo[]> {
   const db = getFirestore();
+
+  const todoDateIns = todoDate ? ["", todoDate] : [""];
   const q = query(
     collection(db, "todos"),
     where("uid", "==", uid),
+    where("todoDate", "in", todoDateIns),
     orderBy("createdAt")
   );
+
   const querySnapshot = await getDocs(q);
   const data = querySnapshot.docs.map(
     (doc) => ({ id: doc.id, ...doc.data() } as ITodo)
